@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="../static/index.css">
+<div class="main_container">
+    <div id="sidebar">
+        <ul>
+            <li>
+                <a href="/update-timetable"> Update Untis </a>  
+            </li>
+        </ul>
+    </div>
+    <div id="upper" class="sub_container">
+       
+        <div id="left" class ="container">
+            {% include "timetable.html" %}
+        </div>
+        <div id="right" class="container">
+            {% include "calendar.html" %}
+        </div>
+    </div>
+    <div id="lower" class="sub_container">
+        <p> bla</p>
+    </div>
+</div>
+{% endblock content %}

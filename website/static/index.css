@@ -1,0 +1,66 @@
+.main_container {
+    width: 100%;
+    min-height: 90vh;
+    display: grid;
+    grid-template-rows: 80% 20% ;
+    grid-template-columns: 10% 30% 30% 30%;
+}
+#upper {
+    grid-row: 1;
+    grid-column-start: 2;
+    grid-column-end: 5;
+    display: grid;
+    grid-template-columns: 70% 30%;
+    grid-template-rows: 100%;
+}
+#lower {
+    grid-row: 2;
+
+}
+.main_container > * {
+    overflow: auto;
+}
+/* Style for containers */
+#sidebar {
+    grid-column: 1;
+}
+#left {
+    grid-column: 1;
+    padding: 10px;
+    border: 1px solid white;
+}
+#right {
+    grid-column: 2;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+.today{ 
+    background-color: rgba(138, 193, 223, 0.579);
+}
+table, td, tr, th {
+    border: 1px solid white;
+}
+.timetable td {
+    width: 16.5%;
+}
+
+.timetable > tr {
+     height: 10%;
+}
+
+td a {
+    display: block;
+}
+table {
+    width: 100%;
+    height: 100%;
+}
+.cancelled {
+    background-color: red;
+}
+.irregular {
+    background-color: yellow;
+}
+.holiday {
+    background-color: beige;
+}

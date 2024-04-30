@@ -158,3 +158,23 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+
+# App specific and Flask:
+/__pycache__
+gitignore
+untis_out.html
+/Objects/__pycache__
+/.venv
+/templates/timetable.html
+/templates/calendar.html
+*.db
+/website/__pycache__
+/website/credentials.json
+/website/Objects/__pycache__
+/migrations/versions/__pycache__
+/migrations/__pycache__
+/website/templates/timetable.html
+/website/templates/calendar.html
+/website/templates/profile.html
+/website/templates/subject.html

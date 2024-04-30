@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main_container">
+    <div id="upper" class="sub_container">
+        <div id="left" class ="container">
+            {% include "timetable.html" %}
+        </div>
+        <div id="middle" class="container">
+            <div class="draggable" draggable="true">List Itrem</div>
+        </div>
+        <div id="right" class="container">{% include "calendar.html" %}</div>
+    </div>
+    <div id="lower" class="sub_container">
+        <p> bla</p>
+    </div>
+</div>
+{% endblock content %}

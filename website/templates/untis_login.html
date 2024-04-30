@@ -1,0 +1,29 @@
+{% extends "base.html" %} 
+{% block title %}Login{% endblock title %} 
+{% block content %}
+<form method="POST"> 
+    <h3 align="center"> 
+        Untis Login
+    </h3>
+    <div class="form-group">
+        <label for="user">WebUntis User</label>
+        <input type="text" class="form-control" id="user" name="user" placeholder="enter user">
+    </div>
+    <div class="form-group">
+        <label for="password">Webuntis Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="enter password">
+    </div>
+    <div class="form-group">
+        <label for="server">Webuntis Server</label>
+        <input type="text" class="form-control" id="server" name="server" placeholder="enter Server">
+    </div>
+    <div class="form-group">
+        <label for="school">Webuntis Server</label>
+        <input type="text" class="form-control" id="school" name="school" placeholder="enter School ID">
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <p> All this info besides the password can be found <a style="color: aqua; text-decoration:underline;" href="https://tritone.webuntis.com/profile">here</a> under the "Data Access" section. Click Display unter acces via untis mobile and find the information needed. The "Key" IS NOT your password.</p>
+
+</form>
+{% endblock content %}

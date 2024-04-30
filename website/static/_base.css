@@ -1,0 +1,85 @@
+footer {
+    background-color: aquamarine;
+    border-top: 1px black;
+    max-height: 10%;
+    position: static;
+    width: 100%;
+    height: 5%;
+    bottom: 0;
+    padding: 2px;
+}
+header {
+    background-color: aquamarine;
+    border-bottom: 2px solid black;
+    width: 100%;
+    position: static;
+    height: 5%;
+}
+body {
+    background-color: #302f32;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+a:visited {
+    color: white;
+    text-decoration: none;
+}
+.main_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column; 
+    vertical-align: middle;
+}
+/* Style for draggable elements */
+.draggable {
+    cursor: grab;
+}
+/* Style for dragging state */
+.dragging {
+    opacity: 0.3;
+    cursor: grabbing;
+}
+#uppder, #lower {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    min-height: 10%;
+    border: 1px #5500ff solid;
+    width: 100%;
+}
+/* Style for containers */
+#left, #middle, #right {
+    padding: 10px;
+    border: 1px solid #ddd;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    min-height: fit-content;
+    min-width: fit-content;
+    resize: horizontal;
+    flex-grow: 1;
+}
+.timetable {
+    width: 100%;
+    height: 100%;
+}
+.today{ 
+    background-color: rgba(138, 193, 223, 0.579);
+}
+.Monday {
+    background-color: aqua;
+}
+td>a { 
+    display: block;
+    text-decoration: none;
+}
+table, td, tr, th {
+    border: 1px solid white;
+}
+.calendar{
+    width: 100%;
+    height: 100%;
+}
+* {
+    font-size: 1.25rem;
+}

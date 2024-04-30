@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 align="center"> Something went wrong. </h1>
+
+
+<h2 align="center"> Error: {{ error }}</h2>
+{% if error_code %}
+<h2 align="center"> Error Code: {{ error_code }} </h2>
+{% endif%}
+{% endblock content %}

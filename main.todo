@@ -1,0 +1,28 @@
+Timetable: 
+    ☐ timetable has to be flexible and take timeslots into account
+    ☐ timeslots: Periods of time within the timetable accessed by indexing periods or giving specific times
+    ✔ Relative time -> So next monday as datetime. Compare schedule to week @done(24-04-28 21:43)
+    ✔ Holidays full support @started(24-04-28 21:43) @done(24-04-28 22:28) @lasted(45m1s)
+    ☐ Holidays add rendering for FULL WEEK holidays?
+    ☐ Add TimeTable to Database and convert current timetable.py to a repr or the DB. 
+    ✘ Add longest day indicator @started(24-04-28 22:31) @cancelled(24-04-28 22:47) @wasted(16m38s)
+    ☐ Update Timetable (semi) automatically
+    ☐ Add "loading" indicator for Untis API
+Tasks:
+    ☐ Functionality
+
+Calander:
+    ✔ Add Calander @done(24-04-28 22:28)
+
+website:
+    ✔ User Accounts and logging in @started(24-04-30 20:10) @done(24-04-30 22:31) @lasted(2h21m55s)
+    ✔ Untis Login Global (As in: One User for whole website) @done(24-05-01 00:42)
+    ☐ Untis Login and Database per Person
+    Database:
+        ✔ users @started(24-04-30 18:41) @done(24-04-30 20:10) @lasted(1h29m16s)
+        ✔ subjects @done(24-04-30 20:10)
+        ☐ Tasks/projects
+    Frontend:
+        ☐ Custom Table?
+        ☐ tasks with Drag and drop to dates and Periods
+        ☐ Drag and drop days from Calendar into sidebar?? 
