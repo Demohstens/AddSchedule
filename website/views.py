@@ -28,6 +28,7 @@ def profile(username):
 
 @views.route("/")
 def index():
+    print("Getting '/' route")
     get_flashed_messages()
     return render_template("index.html")
 
