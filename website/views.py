@@ -1,13 +1,15 @@
 from flask import redirect, url_for, Blueprint, get_flashed_messages,  render_template, flash, request
 from flask_login import  login_required, current_user
+from datetime import datetime
 
 from website.Objects._Timetable import update as update_untis
 from website.utils.calendar import update as update_calendar
 import website.utils.untis_login as untis
 
-
+from .Objects.Day import Day 
 from .models import User
 from . import db
+from .utils.untis_login import check_credentials
 
 views = Blueprint("views", __name__)
 
@@ -38,6 +40,11 @@ def calendar():
 @views.route("/d/<date>")
 @login_required
 def day(date):
+    # Date var to date obj.:
+    year, month, day = map(int, date.split("-"))
+    day = Day(datetime(year=year, month=month, day=day))
+    update_calendar()
+    print(day)
     return render_template("debug.html", date=date)
 
 
@@ -64,8 +71,6 @@ def update_timetable():
         else:
          return redirect(url_for("auth.untis_login"))
          
-
-
 
 @views.route("/error")
 def error(error, error_code=None):

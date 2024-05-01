@@ -2,6 +2,7 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from json import loads
+from .utils.untis_login import check_credentials
 
 class Day(db.Model):
     date = db.Column(db.Date, primary_key=True)
@@ -19,8 +20,15 @@ class User(db.Model, UserMixin):
     days = db.relationship("Day")
 
     def get_untis_credentials(self):
-        print(self.untis_login)
-        return loads(self.untis_login.replace("'", '"'))
+        if self.untis_login != None:
+            return loads(self.untis_login.replace("'", '"'))
+        else:
+            if self.untis_login_valid == True:
+                self.untis_login_valid == False
+                db.session.commit()
+            else:
+                print("Please Login")
+        return self.untis_login
     
     #A database object for the untis PeriodObject. Do not touch without API. 
 # class Period(db.Model):

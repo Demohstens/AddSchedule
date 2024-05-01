@@ -99,7 +99,7 @@ def untis_login():
             db.session.commit()
             flash("Untis login Added Successfully! Checking Validity... check profile for info.")
             flash(str(untis_string))
-            check_credentials()
+            check_credentials(current_user)
             return redirect("/")
         else:
             flash("Untis Login Invalid.")

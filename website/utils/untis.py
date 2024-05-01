@@ -2,24 +2,19 @@ import webuntis
 import datetime
 from unidecode import unidecode
 import webuntis.session
+from webuntis.objects import PeriodObject
+from flask_login import current_user
+from .untis_login import login, logout
 
-def get_day(session : webuntis.session, day : datetime.date = datetime.datetime.today()):
+def get_day(session : webuntis.session = None, day : datetime.date = datetime.datetime.today()):
+    logout_required = False
+    if session == None and current_user.is_authenticated:
+        session = login(current_user)
+        logout_required = True
     table = session.my_timetable(start=day, end=day).to_table()
-    return_doc = []
-
-
-    #Create HTML Table head
-    return_doc.append(f'<table border="1" class="timetable" date="{day}"><thead>')
-    #Only add the Time Column if the hour is the first in a sequence (By multiplying string by boolean)
-    return_doc.append('<th>Time</th>' * is_first_or_only_day)
-    weekday = {0: "Monday", 1:"Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday"}
-    return_doc.append(f'<th class="{str(day).replace("-", "")}">' + str(weekday.get(day.weekday())) + '</th>')
-    return_doc.append('</thead><tbody>\n')
-
-    #HTML Table body
+    periods = []
+    #Will be set
     for time, row in table:
-        return_doc.append('<tr class="timetable_row">')
-        return_doc.append('<td>{}</td>'.format(time.strftime('%H:%M')) * is_first_or_only_day)
         for _, cell in (row):
             #Empty variables to get the data from the period and add it to HTML classes later
             period_type = ""
@@ -29,23 +24,14 @@ def get_day(session : webuntis.session, day : datetime.date = datetime.datetime.
                 period_code = period.code or "regular"
                 period_type = period.type
                 try:
-                    subject_name = unidecode(', '.join(su.name for su in period.subjects))
-                    sub_name = (f'<p class=lsname>{subject_name}</p>')
-                    if period.lstext:
-                        sub_name += f'<p class=lstext>{unidecode(period.lstext)}</p>'
-                    if period.substText:
-                        sub_name += f'<p class=substtext>{unidecode(period.substText)}</p>'
+                    #periods.append({"sart" : period.start, "end" : period.end, "klassen" : period.klassen, "teachers" : period.teachers })
+                    periods.append(PeriodObject)
                 except IndexError:
                     pass
-            return_doc.append(f'<td class="{period_type} {period_code}"><a href="/s/{subject_name.replace(" ", "-").replace("/", "-")}">')
-            if sub_name:
-                return_doc.append(sub_name)
-            return_doc.append('</a></td>')
-            sub_name = None
-        return_doc.append('</tr>')
-    return_doc.append('</tbody></table>')
-    
-    return "".join(return_doc)
+    times = set(p.start for p in periods)
+    if logout_required:
+        logout(session=session)
+    return periods
 
 def get_week(session : webuntis.session):
     return_doc = []
@@ -99,6 +85,8 @@ def get_week(session : webuntis.session):
     return_doc.append('</tbody></table>')
     
     print("Updated Timetable.html")
+    if logout_required:
+        logout(session)
     return "".join(return_doc)
 
 if __name__ == "__main__":
