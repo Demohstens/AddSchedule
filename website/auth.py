@@ -6,8 +6,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 # Relative imports
 from .models import User
 from . import db   ##means from __init__.py import db
-from .utils.untis_login import check_credentials
-from .utils.untis_login import login as login_untis_session
+from .utils.untis_login import login as login_untis_session, logout as logout_untis_session
 
 auth = Blueprint("auth", __name__)
 
@@ -39,10 +38,7 @@ def login():
 @login_required
 def logout():
     # Checks if a untis session exists and logs it out.
-    try:
-        session["untis_session"].logout()
-    except KeyError:
-        pass
+    untis_login
     # Logs out of the Flask Session
     logout_user()
     return redirect("/")
@@ -104,8 +100,7 @@ def untis_login():
         untis_server = request.form.get("server")
         untis_school = request.form.get("school")
         if untis_name and untis_password and untis_server and untis_school:
-            untis_dict = {"user" : untis_name, "password" : untis_password, "server" : untis_server, "school" : untis_school}
-            current_user.untis_login = untis_dict
+            current_user.untis_login = {"user" : untis_name, "password" : untis_password, "server" : untis_server, "school" : untis_school}
             db.session.commit()
             flash("Untis login Added Successfully! Checking Validity... check profile for info.")
             login_untis_session(current_user)

@@ -9,7 +9,6 @@ import website.utils.untis_login as untis
 from .Objects.Day import Day 
 from .models import User
 from . import db
-from .utils.untis_login import check_credentials
 
 views = Blueprint("views", __name__)
 
@@ -63,11 +62,8 @@ def timetable():
 @views.route("/update-timetable")
 @login_required  
 def update_timetable():
-    if current_user.untis_login_valid:
-        try:
-            untis_session = session["untis_session"]
-        except KeyError:
-            untis.login(current_user)
+    if current_user.untis_login:
+        untis_session = untis.login()
         update_untis(untis_session)
         return redirect("/")
     else:

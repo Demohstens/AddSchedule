@@ -25,13 +25,7 @@ def check_holidays(session, start=datetime.datetime.now().date(), end=datetime.d
 
 def get_day(day : datetime.date = datetime.datetime.today()):
     if current_user.is_authenticated:
-        try:
-            session = flask_session["untis_session"]
-        except KeyError:
-            if login_untis_session() == True:
-                session = flask_session["untis_session"]
-            else:
-                raise Exception("Could not find Untis Session")
+        session = login_untis_session()
     else:
         raise Exception("Could not find untis Session")
     table = session.my_timetable(start=day, end=day).to_table()
