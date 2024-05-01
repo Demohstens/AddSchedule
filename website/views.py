@@ -1,7 +1,7 @@
 from flask import redirect, url_for, Blueprint, get_flashed_messages,  render_template, flash, request
 from flask_login import  login_required, current_user
 
-from website.Objects.Timetable import update as update_untis
+from website.Objects._Timetable import update as update_untis
 from website.utils.calendar import update as update_calendar
 import website.utils.untis_login as untis
 
@@ -47,7 +47,6 @@ def subject(subject):
     return render_template("subject.html", subject=subject)
 
 @views.route("/timetable")
-@login_required
 def timetable():
     return render_template("timetable.html")
   
