@@ -2,7 +2,6 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from json import loads
-from .utils.untis_login import check_credentials
 
 class Day(db.Model):
     date = db.Column(db.Date, primary_key=True)

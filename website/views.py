@@ -1,4 +1,4 @@
-from flask import redirect, url_for, Blueprint, get_flashed_messages,  render_template, flash, request
+from flask import redirect, url_for, Blueprint, get_flashed_messages,  render_template, flash, request, session
 from flask_login import  login_required, current_user
 from datetime import datetime
 
@@ -42,10 +42,12 @@ def calendar():
 def day(date):
     # Date var to date obj.:
     year, month, day = map(int, date.split("-"))
-    day = Day(datetime(year=year, month=month, day=day))
-    update_calendar()
+    day = Day(datetime(year=2024, month=5, day=2))
     print(day)
-    return render_template("debug.html", date=date)
+    print(day.periods)
+    print(day.to_html())
+    return day.to_html()
+    #return render_template("debug.html", date=date)
 
 
 @views.route("/s/<subject>")
@@ -61,9 +63,11 @@ def timetable():
 @login_required  
 def update_timetable():
     if current_user.untis_login_valid:
-        s = untis.login(current_user)  
-        update_untis(s)
-        untis.logout()
+        try:
+            untis_session = session["untis_session"]
+        except KeyError:
+            untis_session = untis.login(current_user)
+        update_untis(untis_session)
         return redirect("/")
     else:
         if untis.check_credentials(user=current_user):

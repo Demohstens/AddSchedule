@@ -4,33 +4,52 @@ from unidecode import unidecode
 import webuntis.session
 from webuntis.objects import PeriodObject
 from flask_login import current_user
-from .untis_login import login, logout
+from flask import session as flask_session
 
-def get_day(session : webuntis.session = None, day : datetime.date = datetime.datetime.today()):
-    logout_required = False
-    if session == None and current_user.is_authenticated:
-        session = login(current_user)
-        logout_required = True
+from .untis_login import login as login_untis_session
+
+def check_holidays(session, start=datetime.datetime.now().date(), end=datetime.datetime.now().date()):
+    holidays_in_range = []
+    days_in_range = [start + datetime.timedelta(days=i) for i in range(datetime.timedelta(end-start or 1))]
+    # holidays_in_week = [h.start.date().weekday() for h in holidays if h.start.date() in days_in_week]
+    for h in session.holidays():
+        if h.start.date() == h.end.date() and h.start.date() in holidays_in_range:
+            holidays_in_range.append(h.start.date().weekday())
+        else: 
+            for d in [d for d in range((h.end.date()-h.start.date()).days)]:
+                day_of_holiday = (h.start.date() + datetime.timedelta(days=d)) 
+                if day_of_holiday in days_in_range:
+                    holidays_in_range.append(day_of_holiday)  
+    return holidays_in_range
+
+
+def get_day(day : datetime.date = datetime.datetime.today()):
+    if current_user.is_authenticated:
+        try:
+            session = flask_session["untis_session"]
+        except KeyError:
+            if login_untis_session() == True:
+                session = flask_session["untis_session"]
+            else:
+                raise Exception("Could not find Untis Session")
+    else:
+        raise Exception("Could not find untis Session")
     table = session.my_timetable(start=day, end=day).to_table()
-    periods = []
+    periods : list = []
     #Will be set
     for time, row in table:
         for _, cell in (row):
             #Empty variables to get the data from the period and add it to HTML classes later
-            period_type = ""
-            subject_name = ""
-            period_code = "" 
+            # period_type = ""
+            # subject_name = ""
+            # period_code = "" 
             for period in cell:
-                period_code = period.code or "regular"
-                period_type = period.type
-                try:
-                    #periods.append({"sart" : period.start, "end" : period.end, "klassen" : period.klassen, "teachers" : period.teachers })
-                    periods.append(PeriodObject)
-                except IndexError:
-                    pass
-    times = set(p.start for p in periods)
-    if logout_required:
-        logout(session=session)
+                # period_code = period.code or "regular"
+                # period_type = period.type
+                # try:
+                periods.append(period)   
+                # except IndexError:
+                #     pass
     return periods
 
 def get_week(session : webuntis.session):
@@ -45,8 +64,6 @@ def get_week(session : webuntis.session):
     friday = monday + datetime.timedelta(days=4)
 
     table = session.my_timetable(start=monday, end=friday).to_table()
-    open("./website/templates/timetable.html", "w").close()
-    f = open("./website/templates/timetable.html", "a")
 
     #Create HTML Table
     return_doc.append(f'<table border="1" class="draggable timetable" start-date="{str(monday)}" end-date="{str(friday)}"  draggable="true"><thead><th>Time</th>')
@@ -86,9 +103,3 @@ def get_week(session : webuntis.session):
     
     print("Updated Timetable.html")
     return "".join(return_doc)
-
-if __name__ == "__main__":
-    from website.utils.untis_login import login, logout
-    s = login()
-    get_day(session=s, day=datetime.datetime(2024, 4, 29))
-    logout(s)

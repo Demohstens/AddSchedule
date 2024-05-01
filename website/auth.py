@@ -1,5 +1,5 @@
 # Dependancy imports
-from flask import redirect, url_for, Blueprint, render_template, request, flash
+from flask import redirect, url_for, Blueprint, render_template, request, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 
@@ -7,6 +7,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from .models import User
 from . import db   ##means from __init__.py import db
 from .utils.untis_login import check_credentials
+from .utils.untis_login import login as login_untis_session
 
 auth = Blueprint("auth", __name__)
 
@@ -37,6 +38,12 @@ def login():
 @auth.route("/logout")
 @login_required
 def logout():
+    # Checks if a untis session exists and logs it out.
+    try:
+        session["untis_session"].logout()
+    except KeyError:
+        pass
+    # Logs out of the Flask Session
     logout_user()
     return redirect("/")
     
@@ -66,10 +73,14 @@ def sign_up():
         else:
             try:
                 # User creation successful
+                # Create Database entry
                 new_user = User(email=email, username=username, password=generate_password_hash(password, method="pbkdf2:sha256"))
                 db.session.add(new_user)
                 db.session.commit()
+
+                # Log user in
                 login_user(new_user, remember=True)
+                session["untis_session"] = untis_login()
                 flash("Account created successfully!")
                 return redirect(url_for("views.profile", username=username))
             except:
@@ -99,7 +110,8 @@ def untis_login():
             db.session.commit()
             flash("Untis login Added Successfully! Checking Validity... check profile for info.")
             flash(str(untis_string))
-            check_credentials(current_user)
+            if check_credentials(current_user) == True:
+                session["untis_session"] = login_untis_session()
             return redirect("/")
         else:
             flash("Untis Login Invalid.")

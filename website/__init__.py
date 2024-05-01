@@ -2,7 +2,7 @@ from flask import Flask
 from json import load 
 from flask_sqlalchemy import SQLAlchemy
 from os import path
-from flask_login import LoginManager, current_user
+from flask_login import LoginManager, current_user 
 from flask_socketio import SocketIO
 
 
@@ -42,7 +42,8 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
-    
+
+
     #Initialize Blueprints / links / redirects
     from .views import views
     from .auth import auth
