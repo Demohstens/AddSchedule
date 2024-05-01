@@ -162,7 +162,6 @@ cython_debug/
 
 # App specific and Flask:
 /__pycache__
-gitignore
 untis_out.html
 /Objects/__pycache__
 /.venv
