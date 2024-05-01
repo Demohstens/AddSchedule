@@ -1,9 +1,6 @@
 import datetime
 from unidecode import unidecode
-if __name__ == "__main__":
-    from untis_login import login, logout
-else:
-    from website.Objects.untis_login import login, logout
+from ..utils.untis_login import login, logout
 
 def update(session):
     # prefered: with webuntis.Session(...).login() as s:

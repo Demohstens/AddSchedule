@@ -27,7 +27,7 @@ def create_app():
 
 
     # check Database
-    from .models import User, Subject, Period
+    from .models import User, Day
 
     create_database(app=app)
 

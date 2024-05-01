@@ -102,7 +102,7 @@ def get_week(session : webuntis.session):
     return "".join(return_doc)
 
 if __name__ == "__main__":
-    from untis_login import login, logout
+    from website.utils.untis_login import login, logout
     s = login()
     get_day(session=s, day=datetime.datetime(2024, 4, 29))
     logout(s)

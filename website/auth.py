@@ -6,7 +6,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 # Relative imports
 from .models import User
 from . import db   ##means from __init__.py import db
-from .Objects.untis_login import check_credentials
+from .utils.untis_login import check_credentials
 
 auth = Blueprint("auth", __name__)
 

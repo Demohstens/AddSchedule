@@ -2,8 +2,8 @@ from flask import redirect, url_for, Blueprint, get_flashed_messages,  render_te
 from flask_login import  login_required, current_user
 
 from website.Objects.Timetable import update as update_untis
-from website.Objects.Calendar import update as update_calendar
-import website.Objects.untis_login as untis
+from website.utils.calendar import update as update_calendar
+import website.utils.untis_login as untis
 
 
 from .models import User
