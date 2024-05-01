@@ -85,8 +85,6 @@ def get_week(session : webuntis.session):
     return_doc.append('</tbody></table>')
     
     print("Updated Timetable.html")
-    if logout_required:
-        logout(session)
     return "".join(return_doc)
 
 if __name__ == "__main__":
