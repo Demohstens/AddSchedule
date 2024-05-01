@@ -58,7 +58,7 @@ def subject(subject):
 @views.route("/timetable")
 def timetable():
     return render_template("timetable.html")
-  
+
 @views.route("/update-timetable")
 @login_required  
 def update_timetable():
@@ -66,16 +66,14 @@ def update_timetable():
         try:
             untis_session = session["untis_session"]
         except KeyError:
-            untis_session = untis.login(current_user)
+            untis.login(current_user)
         update_untis(untis_session)
         return redirect("/")
     else:
-        if untis.check_credentials(user=current_user):
-            update_calendar()
-        else:
-         return redirect(url_for("auth.untis_login"))
-         
+        return redirect(url_for("auth.untis_login"))
 
-@views.route("/error")
+@views.route("/error/<error>")
 def error(error, error_code=None):
+    current_user.untis_login = None
+    db.session.commit()
     return render_template("error.html", error=error, error_code=error_code)

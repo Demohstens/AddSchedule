@@ -3,9 +3,11 @@ from unidecode import unidecode
 from ..utils.untis_login import login as login_untis_session
 from flask import session as flask_session
 
-def update(session):
+def update(session=None):
     try:
         session = flask_session["untis_session"]
+        print("Session found")
+        print(session)
     except KeyError:
         login_untis_session()
         session = session["untis_session"]

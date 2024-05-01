@@ -80,7 +80,6 @@ def sign_up():
 
                 # Log user in
                 login_user(new_user, remember=True)
-                session["untis_session"] = untis_login()
                 flash("Account created successfully!")
                 return redirect(url_for("views.profile", username=username))
             except:
@@ -105,13 +104,11 @@ def untis_login():
         untis_server = request.form.get("server")
         untis_school = request.form.get("school")
         if untis_name and untis_password and untis_server and untis_school:
-            untis_string = str({"user" : untis_name, "password" : str(untis_password), "server" : untis_server, "school" : untis_school})
-            current_user.untis_login = untis_string
+            untis_dict = {"user" : untis_name, "password" : untis_password, "server" : untis_server, "school" : untis_school}
+            current_user.untis_login = untis_dict
             db.session.commit()
             flash("Untis login Added Successfully! Checking Validity... check profile for info.")
-            flash(str(untis_string))
-            if check_credentials(current_user) == True:
-                session["untis_session"] = login_untis_session()
+            login_untis_session(current_user)
             return redirect("/")
         else:
             flash("Untis Login Invalid.")
