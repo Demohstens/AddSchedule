@@ -1,11 +1,12 @@
-from flask import redirect, url_for, Blueprint, get_flashed_messages,  render_template, flash, request
+from flask import redirect, url_for, Blueprint, get_flashed_messages,  render_template, flash, request, session
 from flask_login import  login_required, current_user
+from datetime import datetime
 
-from website.Objects.Timetable import update as update_untis
+from website.Objects._Timetable import update as update_untis
 from website.utils.calendar import update as update_calendar
 import website.utils.untis_login as untis
 
-
+from .Objects.Day import Day 
 from .models import User
 from . import db
 
@@ -26,6 +27,7 @@ def profile(username):
 
 @views.route("/")
 def index():
+    print("Getting '/' route")
     get_flashed_messages()
     return render_template("index.html")
 
@@ -38,7 +40,14 @@ def calendar():
 @views.route("/d/<date>")
 @login_required
 def day(date):
-    return render_template("debug.html", date=date)
+    # Date var to date obj.:
+    year, month, day = map(int, date.split("-"))
+    day = Day(datetime(year=2024, month=5, day=2))
+    print(day)
+    print(day.periods)
+    print(day.to_html())
+    return day.to_html()
+    #return render_template("debug.html", date=date)
 
 
 @views.route("/s/<subject>")
@@ -47,27 +56,21 @@ def subject(subject):
     return render_template("subject.html", subject=subject)
 
 @views.route("/timetable")
-@login_required
 def timetable():
     return render_template("timetable.html")
-  
+
 @views.route("/update-timetable")
 @login_required  
 def update_timetable():
-    if current_user.untis_login_valid:
-        s = untis.login(current_user)  
-        update_untis(s)
-        untis.logout()
+    if current_user.untis_login:
+        untis_session = untis.login()
+        update_untis(untis_session)
         return redirect("/")
     else:
-        if untis.check_credentials(user=current_user):
-            update_calendar()
-        else:
-         return redirect(url_for("auth.untis_login"))
-         
+        return redirect(url_for("auth.untis_login"))
 
-
-
-@views.route("/error")
+@views.route("/error/<error>")
 def error(error, error_code=None):
+    current_user.untis_login = None
+    db.session.commit()
     return render_template("error.html", error=error, error_code=error_code)

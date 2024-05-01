@@ -1,12 +1,12 @@
 # Dependancy imports
-from flask import redirect, url_for, Blueprint, render_template, request, flash
+from flask import redirect, url_for, Blueprint, render_template, request, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 
 # Relative imports
 from .models import User
 from . import db   ##means from __init__.py import db
-from .utils.untis_login import check_credentials
+from .utils.untis_login import login as login_untis_session, logout as logout_untis_session
 
 auth = Blueprint("auth", __name__)
 
@@ -37,6 +37,9 @@ def login():
 @auth.route("/logout")
 @login_required
 def logout():
+    # Checks if a untis session exists and logs it out.
+    untis_login
+    # Logs out of the Flask Session
     logout_user()
     return redirect("/")
     
@@ -66,9 +69,12 @@ def sign_up():
         else:
             try:
                 # User creation successful
+                # Create Database entry
                 new_user = User(email=email, username=username, password=generate_password_hash(password, method="pbkdf2:sha256"))
                 db.session.add(new_user)
                 db.session.commit()
+
+                # Log user in
                 login_user(new_user, remember=True)
                 flash("Account created successfully!")
                 return redirect(url_for("views.profile", username=username))
@@ -94,12 +100,10 @@ def untis_login():
         untis_server = request.form.get("server")
         untis_school = request.form.get("school")
         if untis_name and untis_password and untis_server and untis_school:
-            untis_string = str({"user" : untis_name, "password" : str(untis_password), "server" : untis_server, "school" : untis_school})
-            current_user.untis_login = untis_string
+            current_user.untis_login = {"user" : untis_name, "password" : untis_password, "server" : untis_server, "school" : untis_school}
             db.session.commit()
             flash("Untis login Added Successfully! Checking Validity... check profile for info.")
-            flash(str(untis_string))
-            check_credentials()
+            login_untis_session(current_user)
             return redirect("/")
         else:
             flash("Untis Login Invalid.")

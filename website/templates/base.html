@@ -48,8 +48,8 @@
     </header>
     <body>
       
-        {% block content %}
-        {% endblock content %}
+    {% block content %}
+    {% endblock content %}
         
 
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -73,7 +73,8 @@
     {% endfor %}
     {% endif %}
     {% endwith %}
-
+    {% block javascript %}
+    {% endblock javascript %}
     </body>
     <footer>
         <a href="https://github.com/Demohstens">My github</a>

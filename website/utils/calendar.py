@@ -37,15 +37,18 @@ def formatday(cal, day, weekday, now=datetime.datetime.now()):
         # day outside month
         return '<td class="%s">&nbsp;</td>' % cal.cssclass_noday
     else:
-        month = now.month
+        try:
+            month = now.month
+        except AttributeError:
+            print(type(now))
         if len(str(now.month)) < 2:
             month = f"0{now.month}"
-        if len(str(now.day)) < 2:
-            day = f"0{now.day}"
+        if len(str(day)) < 2:
+            day = f"0{day}"
         if now.date().day == day:
-            return f'<td class="%s today"><a href="/d/{now.year}{month}{now.day}">%d</a></td>' % (cal.cssclasses[weekday], day)
+            return f'<td class="%s today"><a href="/d/{now.year}-{month}-{day}">%d</a></td>' % (cal.cssclasses[weekday], day)
         else:
-            return f'<td class="%s"><a href="/d/{now.year}{month}{now.day}">%d</a></td>' % (cal.cssclasses[weekday], int(day))
+            return f'<td class="%s"><a href="/d/{now.year}-{month}-{day}">%d</a></td>' % (cal.cssclasses[weekday], int(day))
     
 def formatweek(cal, theweek, now=datetime.datetime.now()):
     """

@@ -1,0 +1,35 @@
+#schedule-container {
+    position: relative;
+    width: 600px; /* Adjust as needed */
+    height: 600px; /* Adjust as needed */
+}
+
+.time-axis {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px; /* Adjust as needed */
+    height: 100%; /* Adjust as needed */
+}
+
+.time-label {
+    margin-bottom: 20px; /* Adjust as needed */
+}
+
+.schedule {
+    display: grid;
+    grid-template-columns: repeat(5, 20%);
+    grid-template-rows: repeat(10, 10%);
+    grid-auto-flow: column;
+    left: 100px; /* Width of time axis */
+    width: 100%; /* Adjust as needed */
+    height: 80vh; /* Adjust as needed */
+    border: 1px solid #ccc;
+    grid-auto-rows: fit-content;
+}
+.task {
+    display: block;
+    height: 100%;
+    background-color: aquamarine;
+    border: black 1px solid;
+}

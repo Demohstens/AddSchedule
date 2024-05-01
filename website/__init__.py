@@ -2,8 +2,8 @@ from flask import Flask
 from json import load 
 from flask_sqlalchemy import SQLAlchemy
 from os import path
-from flask_login import LoginManager, current_user
-
+from flask_login import LoginManager, current_user 
+from flask_socketio import SocketIO
 
 
 db = SQLAlchemy()
@@ -11,7 +11,8 @@ DB_NAME = 'database.db'
 
 def create_app():
     app = Flask(__name__)
-    
+    socketio = SocketIO(app)
+
     #Import secret Key
     try:
         with open("./website/credentials.json", "r") as f:
@@ -41,7 +42,7 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
-    
+
     #Initialize Blueprints / links / redirects
     from .views import views
     from .auth import auth
@@ -55,7 +56,7 @@ def create_app():
             return current_user 
         return dict(get_current_user=get_current_user)
 
-    return app 
+    return socketio, app
 
 def create_database(app : Flask):
     if not path.exists('sqlite:///' + app.instance_path + DB_NAME):

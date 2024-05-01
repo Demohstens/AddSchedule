@@ -17,7 +17,9 @@ Calander:
 website:
     ✔ User Accounts and logging in @started(24-04-30 20:10) @done(24-04-30 22:31) @lasted(2h21m55s)
     ✔ Untis Login Global (As in: One User for whole website) @done(24-05-01 00:42)
-    ☐ Untis Login and Database per Person
+    ☐ Untis Login and Database per Person 
+        ✔ half done @done(24-05-01 16:03)
+        ☐ Still need: views set up per Person via websocket / static html injection
     Database:
         ✔ users @started(24-04-30 18:41) @done(24-04-30 20:10) @lasted(1h29m16s)
         ✔ subjects @done(24-04-30 20:10)

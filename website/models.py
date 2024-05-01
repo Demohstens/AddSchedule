@@ -14,13 +14,23 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(128))
     username = db.Column(db.String(128), unique=True)
     is_private = db.Column(db.Boolean, default=False)
-    untis_login = db.Column(db.String, default=None)
+    untis_login = db.Column(db.PickleType, default=None)
     untis_login_valid = db.Column(db.Boolean, default=False)
     days = db.relationship("Day")
 
     def get_untis_credentials(self):
         print(self.untis_login)
-        return loads(self.untis_login.replace("'", '"'))
+        if self.untis_login != None:
+            # return loads(self.untis_login.replace("'", '"'))
+            # Parse string to dict:
+            ret = self.untis_login
+        else:
+            if self.untis_login_valid == True:
+                self.untis_login_valid == False
+                db.session.commit()
+            else:
+                print("Please Login")
+        return self.untis_login
     
     #A database object for the untis PeriodObject. Do not touch without API. 
 # class Period(db.Model):
