@@ -3,7 +3,7 @@ import datetime
 from unidecode import unidecode
 import webuntis.session
 
-def get_day(session : webuntis.session, day : datetime.date = datetime.datetime.today(), is_first_or_only_day = False):
+def get_day(session : webuntis.session, day : datetime.date = datetime.datetime.today()):
     table = session.my_timetable(start=day, end=day).to_table()
     return_doc = []
 
